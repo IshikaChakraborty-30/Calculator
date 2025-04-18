@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator using Javascript</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <form name="calc">
+                <div class="display">
+                    <input type="text" name="display" id="display" readonly style="background-color: rgb(245, 241, 236);">
+                </div>
+                <div>
+                    <input type="button" value="AC" onclick="clearDisplay()" class="operator">
+                    <input type="button" value="DL" onclick="deleteLast()" class="operator">                
+                    <input type="button" value="." onclick="appendValue('.')" class="operator">
+                    <input type="button" value="/" onclick="appendOperator('/')" class="operator">
+                </div>
+                <div>
+                    <input type="button" value="7" onclick="appendValue('7')">
+                    <input type="button" value="8" onclick="appendValue('8')">
+                    <input type="button" value="9" onclick="appendValue('9')">
+                    <input type="button" value="*" onclick="appendOperator('*')" class="operator">
+                </div>
+                <div>
+                    <input type="button" value="4" onclick="appendValue('4')">
+                    <input type="button" value="5" onclick="appendValue('5')">
+                    <input type="button" value="6" onclick="appendValue('6')">
+                    <input type="button" value="-" onclick="appendOperator('-')" class="operator">
+                </div>
+                <div>
+                    <input type="button" value="1" onclick="appendValue('1')">
+                    <input type="button" value="2" onclick="appendValue('2')">
+                    <input type="button" value="3" onclick="appendValue('3')">
+                    <input type="button" value="+" onclick="appendOperator('+')" class="operator">
+                </div>
+                <div>
+                    <input type="button" value="00" onclick="appendValue('00')">
+                    <input type="button" value="0" onclick="appendValue('0')">
+                    <input type="button" value="=" onclick="calculate()" class="equal operator">
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Get the display element from the form
+        const display = document.calc.display;
+
+        // Clears the display
+        function clearDisplay() {
+            display.value = '';
+        }
+
+        // Deletes the last character from the display
+        function deleteLast() {
+            display.value = display.value.slice(0, -1);
+        }
+
+        // Appends a value (number or dot) to the display
+        function appendValue(value) {
+            display.value += value;
+        }
+
+        // Appends an operator to the display, ensuring no consecutive operators are entered
+        function appendOperator(operator) {
+            const lastChar = display.value.slice(-1);
+            if (['+', '-', '*', '/'].includes(lastChar)) {
+                // Replace the last operator with the new one
+                display.value = display.value.slice(0, -1) + operator;
+            } else {
+                // Append the operator
+                display.value += operator;
+            }
+        }
+
+        // Evaluates the expression in the display and handles errors
+        function calculate() {
+            try {
+                // Evaluate the expression and update the display
+                let result = eval(display.value);
+                // If the result is a decimal, round it to 3 decimal places
+                if (result % 1 !== 0) {
+                    result = result.toFixed(3);
+                }
+                display.value = result;
+            } catch (e) {
+                // Display 'Error' if the evaluation fails
+                display.value = 'Error';
+            }
+        }
+    </script>
+</body>
+</html>
